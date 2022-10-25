@@ -6,11 +6,17 @@
 
     <groupId>ie.tcd.meudecd</groupId>
     <artifactId>CS7IS3-Assignment-1</artifactId>
-    <version>1.0</version>
+    <version>v1.0</version>
     <packaging>jar</packaging>
     <name>assignment1</name>
 
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -86,7 +92,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ie.tcd.meudecd.main</mainClass>
+                                    <mainClass>ie.tcd.meudecd.Analysis</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
