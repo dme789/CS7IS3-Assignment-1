@@ -20,50 +20,38 @@ import org.apache.lucene.store.FSDirectory;
 public class Analysis {
 
     // Directory where the search index will be saved
-    private static String INDEX_DIRECTORY = "index";
+    private static String INDEX_DIRECTORY = "../index";
 
     public static void main(String[] args) throws IOException
     {
-        // Make sure we were given something to index
-        if (args.length <= 0)
-        {
-            System.out.println("Expected corpus as input");
-            System.exit(1);
-        }
-
         // Analyzer that is used to process TextField
         Analyzer analyzer = new StandardAnalyzer();
 
-        // ArrayList of documents in the corpus
-        ArrayList<Document> documents = new ArrayList<Document>();
-
-        // Open the directory that contains the search index
+        // To store an index in memory
+        // Directory directory = new RAMDirectory();
+        // To store an index on disk
         Directory directory = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-
-        // Set up an index writer to add process and save documents to the index
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
+
+        // Index opening mode
+        // IndexWriterConfig.OpenMode.CREATE = create a new index
+        // IndexWriterConfig.OpenMode.APPEND = open an existing index
+        // IndexWriterConfig.OpenMode.CREATE_OR_APPEND = create an index if it
+        // does not exist, otherwise it opens it
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+
         IndexWriter iwriter = new IndexWriter(directory, config);
 
-        for (String arg : args)
-        {
-            // Load the contents of the file
-            System.out.printf("Indexing \"%s\"\n", arg);
-            String content = new String(Files.readAllBytes(Paths.get(arg)));
+        // Create a new document
+        Document doc = new Document();
+        doc.add(new TextField("super_name", "Goal", Field.Store.YES));
+        doc.add(new TextField("name", "Dom Meudec", Field.Store.YES));
+        doc.add(new TextField("category", "football", Field.Store.YES));
 
-            // Create a new document and add the file's contents
-            Document doc = new Document();
-            doc.add(new StringField("filename", arg, Field.Store.YES));
-            doc.add(new TextField("content", content, Field.Store.YES));
+        // Save the document to the index
+        iwriter.addDocument(doc);
 
-            // Add the file to our linked list
-            documents.add(doc);
-        }
-
-        // Write all the documents in the linked list to the search index
-        iwriter.addDocuments(documents);
-
-        // Commit everything and close
+        // Commit changes and close everything
         iwriter.close();
         directory.close();
     }
