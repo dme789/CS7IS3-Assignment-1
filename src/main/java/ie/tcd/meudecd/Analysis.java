@@ -44,9 +44,9 @@ public class Analysis {
 
         // Create a new document
         Document doc = new Document();
-        doc.add(new TextField("super_name", "Goal", Field.Store.YES));
-        doc.add(new TextField("name", "Dom Meudec", Field.Store.YES));
-        doc.add(new TextField("category", "football", Field.Store.YES));
+        doc.add(new TextField("super_name", "Spider-MAN1", Field.Store.YES));
+        doc.add(new TextField("name", "Peter ParkER1", Field.Store.YES));
+        doc.add(new TextField("category", "superheRO0", Field.Store.YES));
 
         // Save the document to the index
         iwriter.addDocument(doc);
