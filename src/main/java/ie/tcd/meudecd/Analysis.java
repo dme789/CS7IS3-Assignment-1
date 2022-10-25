@@ -20,7 +20,7 @@ import org.apache.lucene.store.FSDirectory;
 public class Analysis {
 
     // Directory where the search index will be saved
-    private static String INDEX_DIRECTORY = "../index";
+    private static String INDEX_DIRECTORY = "index";
 
     public static void main(String[] args) throws IOException
     {
