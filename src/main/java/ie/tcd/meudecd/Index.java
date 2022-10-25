@@ -3,7 +3,6 @@ package ie.tcd.meudecd;
 import java.io.IOException;
 
 import java.nio.file.Paths;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -43,9 +42,9 @@ public class Index
         
         // Create a new document
         Document doc = new Document();
-        doc.add(new TextField("super_name", "Goal", Field.Store.YES));
-        doc.add(new TextField("name", "Dom Meudec", Field.Store.YES));
-        doc.add(new TextField("category", "football", Field.Store.YES));
+        doc.add(new TextField("super_name", "Spider-MAN1", Field.Store.YES));
+        doc.add(new TextField("name", "Peter ParkER1", Field.Store.YES));
+        doc.add(new TextField("category", "superheRO0", Field.Store.YES));
 
         // Save the document to the index
         iwriter.addDocument(doc);
