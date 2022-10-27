@@ -48,7 +48,6 @@ public class Index
         try {
             BufferedReader cranReader = new BufferedReader(new FileReader(CRAN_DATA));
             String currLine = cranReader.readLine();
-            int check = 1;
             while(currLine != null) {
                 String title = "";
                 String author = "";
@@ -68,8 +67,10 @@ public class Index
                             currAtr = currLine.substring(0,2);
                             currLine = cranReader.readLine();
                         } else if (currLine.startsWith(".I")) {
-                            check = 0;
                             break;
+                        }
+                        if (!currLine.substring(0,1).equals(" ")) {
+                            currLine = " " + currLine;
                         }
                         if (currAtr.equals(".T")) {
                             title = title + currLine;
@@ -79,9 +80,6 @@ public class Index
                             bib = bib + currLine;
                         } else if (currAtr.equals(".W")) {
                             words = words + currLine;
-                        }
-                        if (check == 1) {
-                            System.out.println("Current Attribute: " + currAtr + ", content: " + currLine);
                         }
                         currLine = cranReader.readLine();
                     }
