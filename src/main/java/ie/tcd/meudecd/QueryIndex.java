@@ -112,7 +112,7 @@ public class QueryIndex {
                 ScoreDoc[] hits = isearcher.search(queryQ, 50).scoreDocs;
 
                 for (int i =0; i < hits.length; i++) {
-                    queryWriter.write(queryNumber + " Doc ID: " +isearcher.doc(hits[i].doc).get("id") + " Score: " + hits[i].score);
+                    queryWriter.write(queryNumber + " " + isearcher.doc(hits[i].doc).get("id") + " " + hits[i].score);
                     queryWriter.newLine();
                 }
 
