@@ -40,6 +40,7 @@ public class Main
             BufferedWriter qrelWriter = new BufferedWriter(new FileWriter(CRAN_QREL_FORMATTED));
             String currLine = qrelReader.readLine();
             while(currLine != null) {
+                currLine.trim();
                 String[] rel = currLine.split(" ");
                 qrelWriter.write(rel[0] + " 0 " + rel[1] + " " + rel[2]);
                 qrelWriter.newLine();
