@@ -110,6 +110,7 @@ public class QueryIndex {
                 query = query.replace("?", "");
                 Query queryQ = queryParser.parse(query);
                 ScoreDoc[] hits = isearcher.search(queryQ, 50).scoreDocs;
+                //normalizeResults(hits);
 
                 for (int i =0; i < hits.length; i++) {
                     queryWriter.write(queryNumber + " Q0 " + (i+1) + " " + isearcher.doc(hits[i].doc).get("id") +
@@ -124,6 +125,14 @@ public class QueryIndex {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void normalizeResults(ScoreDoc[] hits)
+    {
+        float max = hits[0].score;
+        for (int i = 0; i < hits.length; i++) {
+            hits[i].score = (hits[i].score / max) * 5;
         }
     }
 }
