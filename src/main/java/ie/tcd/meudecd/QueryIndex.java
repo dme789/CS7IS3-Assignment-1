@@ -41,6 +41,7 @@ import org.apache.lucene.search.similarities.BooleanSimilarity;
 import org.apache.lucene.search.similarities.ClassicSimilarity;
 
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -75,7 +76,7 @@ public class QueryIndex {
                 break;
         }
 
-        QueryParser queryParser = new QueryParser("content", analyzer);
+        MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"title", "author", "bib", "content"}, analyzer);
 
         try {
             System.out.println("Starting index querying...");
@@ -107,10 +108,10 @@ public class QueryIndex {
                         currLine = queryReader.readLine();
                     }
                 }
+                query = query.trim();
                 query = query.replace("?", "");
-                Query queryQ = queryParser.parse(query);
+                Query queryQ = queryParser.parse(QueryParser.escape(query));
                 ScoreDoc[] hits = isearcher.search(queryQ, 50).scoreDocs;
-                //normalizeResults(hits);
 
                 for (int i =0; i < hits.length; i++) {
                     queryWriter.write(queryNumber + " Q0 " + (i+1) + " " + isearcher.doc(hits[i].doc).get("id") +
@@ -125,14 +126,6 @@ public class QueryIndex {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void normalizeResults(ScoreDoc[] hits)
-    {
-        float max = hits[0].score;
-        for (int i = 0; i < hits.length; i++) {
-            hits[i].score = (hits[i].score / max) * 5;
         }
     }
 }
