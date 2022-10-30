@@ -88,7 +88,7 @@ public class QueryIndex {
                 }
                 query = query.trim();
                 query = query.replace("?", "");
-                Query queryQ = queryParser.parse(query);
+                Query queryQ = queryParser.parse(QueryParser.escape(query));
                 ScoreDoc[] hits = isearcher.search(queryQ, 50).scoreDocs;
 
                 for (int i =0; i < hits.length; i++) {
