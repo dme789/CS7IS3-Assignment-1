@@ -5,54 +5,27 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-
-import java.util.Scanner;
 
 import java.nio.file.Paths;
-import java.nio.file.Files;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
-import org.apache.lucene.util.BytesRef;
+import org.apache.lucene.search.similarities.*;
 
-import org.apache.lucene.document.Document;
-
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.Fields;
-import org.apache.lucene.index.TermsEnum;
-import org.apache.lucene.index.PostingsEnum;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.FieldType;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.document.StringField;
-
-import org.apache.lucene.search.similarities.BM25Similarity;
-import org.apache.lucene.search.similarities.BooleanSimilarity;
-import org.apache.lucene.search.similarities.ClassicSimilarity;
 
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.DocIdSetIterator;
 
 public class QueryIndex {
 
     private static String INDEX_DIRECTORY = "index";
-    private static String CRAN_DATA = "cran-data/cran.all.1400";
     private static String CRAN_QUERY = "cran-data/cran.qry";
     private static String RESULT_DIRECTORY = "results/query-results.txt";
 
@@ -64,6 +37,7 @@ public class QueryIndex {
         // Use IndexSearcher to retrieve some arbitrary document from the index
         IndexSearcher isearcher = new IndexSearcher(ireader);
 
+        // Sets the scoring as the same that was used to index the documents
         switch(scoringType) {
             case 1:
                 isearcher.setSimilarity(new BM25Similarity());
@@ -74,7 +48,11 @@ public class QueryIndex {
             case 3:
                 isearcher.setSimilarity(new BooleanSimilarity());
                 break;
+            case 4:
+                isearcher.setSimilarity(new LMDirichletSimilarity());
+                break;
         }
+
 
         MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"title", "author", "bib", "content"}, analyzer);
 
@@ -110,7 +88,7 @@ public class QueryIndex {
                 }
                 query = query.trim();
                 query = query.replace("?", "");
-                Query queryQ = queryParser.parse(QueryParser.escape(query));
+                Query queryQ = queryParser.parse(query);
                 ScoreDoc[] hits = isearcher.search(queryQ, 50).scoreDocs;
 
                 for (int i =0; i < hits.length; i++) {
