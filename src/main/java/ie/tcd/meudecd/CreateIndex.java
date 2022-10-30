@@ -81,10 +81,10 @@ public class CreateIndex
                         }
                         currLine = cranReader.readLine();
                     }
-                    doc.add(new TextField("title", title, Field.Store.YES));
-                    doc.add(new TextField("author", author, Field.Store.YES));
-                    doc.add(new TextField("bib", bib, Field.Store.YES));
-                    doc.add(new TextField("content", words, Field.Store.YES));
+                    doc.add(new TextField("title", title.trim(), Field.Store.YES));
+                    doc.add(new TextField("author", author.trim(), Field.Store.YES));
+                    doc.add(new TextField("bib", bib.trim(), Field.Store.YES));
+                    doc.add(new TextField("content", words.trim(), Field.Store.YES));
                     iwriter.addDocument(doc);
                 }
                 docNumbers++;
