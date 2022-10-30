@@ -42,20 +42,23 @@ public class Main
             while(currLine != null) {
                 currLine = currLine.trim().replaceAll("\\s{2,}", " ");
                 String[] rel = currLine.split(" ");
-                switch (Integer.valueOf(rel[0])) {
+                switch (Integer.valueOf(rel[2])) {
                     case -1:
-                        rel[0] = "1";
+                        rel[2] = "1";
                         break;
                     case 1:
-                        rel[0] = "5";
+                        rel[2] = "5";
                         break;
                     case 2:
-                        rel[0] = "4";
+                        rel[2] = "4";
                         break;
                     case 3:
                         break;
                     case 4:
-                        rel[0] = "2";
+                        rel[2] = "2";
+                        break;
+                    default:
+                        rel[2] = "1";
                         break;
                 }
                 qrelWriter.write(rel[0] + " 0 " + rel[1] + " " + rel[2]);
